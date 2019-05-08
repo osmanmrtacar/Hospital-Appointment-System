@@ -30,11 +30,11 @@ const LinksStack = createStackNavigator({
 });
 
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+  tabBarLabel: 'Appointments',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-clock' : 'md-link'}
     />
   ),
 };
@@ -52,6 +52,8 @@ SettingsStack.navigationOptions = {
     />
   ),
 };
+
+
 
 export default createBottomTabNavigator({
   HomeStack,
