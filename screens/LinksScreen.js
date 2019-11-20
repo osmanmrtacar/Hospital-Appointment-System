@@ -1,4 +1,9 @@
 import React from 'react';
+import HorizontalDatePicker from "@logisticinfotech/react-native-horizontal-date-picker"
+const log = require("./hospitals.json")
+const hospitals = log.hospitals;
+
+
 import { Animated, Button, Dimensions, Picker, Platform, StyleSheet, TouchableWithoutFeedback, Text, View } from 'react-native';
 
 const { width: WindowWidth } = Dimensions.get('window');
@@ -6,7 +11,7 @@ const { width: WindowWidth } = Dimensions.get('window');
 export default class App extends React.Component {
   state = {
     language: 'js',
-    modalIsVisible: false,
+    modalIsVisible: false, clinicModalIsVisible: false,doctorModalIsVisible: false,
     modalAnimatedValue: new Animated.Value(0),
     appointment: {
       hospital: 'Select a hospital',
@@ -47,6 +52,34 @@ export default class App extends React.Component {
     });
   };
 
+  _handleCPressOpen = () => {
+    if (this.state.clinicModalIsVisible) {
+      return;
+    }
+
+    this.setState({ clinicModalIsVisible: true }, () => {
+      Animated.timing(this.state.modalAnimatedValue, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
+  _handleDPressOpen = () => {
+    if (this.state.modalIsVisible) {
+      return;
+    }
+
+    this.setState({ modalIsVisible: true }, () => {
+      Animated.timing(this.state.modalAnimatedValue, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -56,6 +89,29 @@ export default class App extends React.Component {
           <Button title={this.state.appointment.hospital} onPress={this._handlePressOpen} />
           <Button title="Select a clinic" onPress={this._handlePressOpen} />
           <Button title="Select a doctor" onPress={this._handlePressOpen} />
+          <HorizontalDatePicker
+            style={{ flexDirection: 'row' }}
+            pickerType={'datetime'}
+            minDate={new Date()}
+            defaultSelected={new Date()}
+            dayFormat={'DD'}
+            monthFormat={'MMM'}
+            yearFormat={'YYYY'}
+            timeFormat={'HH:mm'}
+            timeStep={30}
+            returnDateFormat={'Do MMMM YY'}
+            returnTimeFormat={'hh:mm a'}
+            returnDateTimeFormat={'DD-MM-YYYY HH:mm'}
+            onDateSelected={this.onDateSelected}
+            onTimeSelected={this.onTimeSelected}
+            onDateTimeSelected={this.onDateTimeSelected}
+          />
+          <Button
+            onPress={alert}
+            title="Submit"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
         </View>
         {this._maybeRenderModal()}
       </View>
@@ -63,11 +119,11 @@ export default class App extends React.Component {
   }
 
   _writeMe = (obj, index) => {
-    alert(index);
     let appointment = { ...this.state.appointment };
     appointment.hospital = obj;
     this.setState({ appointment });
   }
+
 
   _maybeRenderModal = () => {
     if (!this.state.modalIsVisible) {
@@ -104,11 +160,61 @@ export default class App extends React.Component {
             style={{ width: WindowWidth, backgroundColor: '#e1e1e1' }}
             selectedValue={this.state.appointment.hospital}
             onValueChange={this._writeMe}>
-            <Picker.Item label="Denizli" value="dnz" />
-            <Picker.Item label="Izmir" value="izm" />
-            <Picker.Item label="Manisa" value="mns" />
+            {
+              hospitals.map((item, key) => (
+                <Picker.Item label={item.title} value={item.title} key={key} />)
+              )
+            }
           </Picker>
         </Animated.View>
+
+      </View>
+    );
+  };
+
+  _maybeRenderClinics = () => {
+    if (!this.state.modalIsVisible) {
+      return null;
+    }
+
+    const { modalAnimatedValue } = this.state;
+    const opacity = modalAnimatedValue;
+    const translateY = modalAnimatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [300, 0],
+    });
+
+    return (
+      <View
+        style={StyleSheet.absoluteFill}
+        pointerEvents={this.state.modalIsVisible ? 'auto' : 'none'}>
+        <TouchableWithoutFeedback onPress={this._handlePressDone}>
+          <Animated.View style={[styles.overlay, { opacity }]} />
+        </TouchableWithoutFeedback>
+        <Animated.View
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            transform: [{ translateY }],
+          }}>
+          <View style={styles.toolbar}>
+            <View style={styles.toolbarRight}>
+              <Button title="Done" onPress={this._handlePressDone} />
+            </View>
+          </View>
+          <Picker
+            style={{ width: WindowWidth, backgroundColor: '#e1e1e1' }}
+            selectedValue={this.state.appointment.hospital}
+            onValueChange={this._writeMe}>
+            {
+              hospitals.map((item, key) => (
+                <Picker.Item label={item.title} value={item.title} key={key} />)
+              )
+            }
+          </Picker>
+        </Animated.View>
+
       </View>
     );
   };

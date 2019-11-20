@@ -1,0 +1,33 @@
+{
+    "hospitals": [
+    {
+        "id": "1",
+        "title": "Izmir",
+        "clinics": [
+            {
+                "id": "1",
+                "title": "KBB"
+            },
+            {
+                "id": "2",
+                "title": "Acil"
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "title": "Denizli",
+        "clinics": [
+            {
+                "id": "1",
+                "title": "Cocuk"
+            },
+            {
+                "id": "2",
+                "title": "Cilt"
+            }
+        ]
+    }
+
+]
+}

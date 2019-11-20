@@ -34,10 +34,10 @@ export default class HomeScreen extends React.Component {
 
           <View style={styles.getStartedContainer}>
 
-            <Text style={styles.getStartedText}>Welcome Osman</Text>
+            <Text style={styles.getStartedText}>Admin Sayfasina Hosgeldiniz</Text>
 
             <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>Ut enim ad minim veniam</MonoText>
+              <MonoText style={styles.codeHighlightText}>Crud Islemleri</MonoText>
             </View>
 
             <Text style={styles.getStartedText}>

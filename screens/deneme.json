@@ -1,0 +1,19 @@
+{
+    "users":[
+        {
+            "title": "admin",
+            "password": "123",
+            "id": "0"
+        },
+        {
+            "title": "doctor",
+            "password": "123",
+            "id": "1"
+        },
+        {
+            "title": "normal",
+            "password": "123",
+            "id": "2"
+        }
+    ]
+}
